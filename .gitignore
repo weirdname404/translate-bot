@@ -1,2 +1,5 @@
 config.json
-.idea
+.idea/
+__pycache__/
+.pyc
+*.swp
