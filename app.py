@@ -1,6 +1,8 @@
 import sys
 import requests
 import json
+import time
+import asyncio
 from flask import Flask, request
 from pprint import pprint
 from ya_api import TranslateApi
@@ -47,9 +49,11 @@ def process_inline_query(update):
     user_query = inline_query["query"]
 
     if user_query:
-        presented_langs = ("ru", "en")
+        presented_langs = ("ru", "en", "de", "fr", "es", "it")
         results = []
         text = "Translated by Yandex.Translate"
+
+        s_t  = time.perf_counter()
 
         for i in range(len(presented_langs)):
             lang = presented_langs[i]
@@ -64,6 +68,8 @@ def process_inline_query(update):
 
         response = {"inline_query_id": inline_query["id"], "results": json.dumps(results)}
         r = requests.post(get_url("answerInlineQuery"), data=response)
+        time_spent = time.perf_counter() - s_t
+        print(f"{time_spent:.3f}secs spent")
         pprint(r.json())
 
 
